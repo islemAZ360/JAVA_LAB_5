@@ -1,3 +1,3 @@
 ## Lab 5
 
-![Project Structure](./imgs/structure.png)
+![Project Structure](imgs/Structure.png)

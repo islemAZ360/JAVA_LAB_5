@@ -105,3 +105,4 @@ public class CollectionManager extends TreeSet<HumanBeing> {
         return this.getHumanBy(human -> human.getName().equalsIgnoreCase(name));
     }
 }
+
