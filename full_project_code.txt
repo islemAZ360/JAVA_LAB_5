@@ -1,0 +1,765 @@
+﻿
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\Main.java ===
+
+package main;
+
+import main.utils.CollectionManager;
+import main.utils.CommandManager;
+import main.utils.FileManager;
+import main.utils.InputManager;
+import java.util.Scanner;
+
+/**
+ * Главный класс приложения (Main).
+ * Точка входа в программу. Здесь происходит инициализация и запуск интерактивного режима.
+ */
+public class Main {
+    public static void main(String[] args) {
+
+        //  1. Определение файла с данными (Data File Setup)
+        // Логика: Если путь передан через аргументы командной строки, используем его.
+        // Иначе используем файл по умолчанию (как делал Person 1)
+
+        String filePath = "data/data.csv";
+        if (args.length > 0) {
+            filePath = args[0];
+        } else {
+            System.out.println("Внимание: Путь к файлу не передан через аргументы. Используется файл по умолчанию: " + filePath);
+        }
+
+        try {
+            // 2. Инициализация менеджеров (Initialization)
+            Scanner scanner = new Scanner(System.in);
+            InputManager inputManager = new InputManager(scanner);
+            CollectionManager collectionManager = new CollectionManager();
+            CommandManager commandManager = new CommandManager();
+
+            // --- 3. Загрузка коллекции из файла (Logic from Person 1) ---
+            try {
+                main.FileManager fileManager = new FileManager(filePath);
+                fileManager.readFile(collectionManager);
+                System.out.println("Коллекция успешно загружена. Количество элементов: " + collectionManager.size());
+            } catch (Exception e) {
+                System.out.println("Ошибка при чтении файла (или файл не найден). Запуск с пустой коллекцией.");
+            }
+
+            // ------4. Регистрация команд (Command Registration - Placeholder for Person 3)-----
+            // Здесь ваш коллега (Person 3) должен будет добавить команды.
+            // Например:
+            // commandManager.register("help", new HelpCommand(commandManager));
+            // commandManager.register("add", new AddCommand(collectionManager, inputManager));
+            // commandManager.register("show", new ShowCommand(collectionManager));
+
+            //  5. Интерактивный цикл (Interactive Loop - Logic from Person 2)
+            System.out.println("\nПрограмма готова к работе! Введите 'exit' для выхода.");
+
+            while (true) {
+                // Вывод приглашения к вводу
+                System.out.print("> ");
+
+                // Проверка на конец ввода (Ctrl+D)
+                if (!scanner.hasNextLine()) break;
+
+                String input = scanner.nextLine().trim();
+
+                // Пропуск пустых строк
+                if (input.isEmpty()) continue;
+
+                // Разделение ввода на команду и аргументы
+                String[] commandArgs = input.split("\\s+");
+
+                // Команда выхода
+                if (commandArgs[0].equalsIgnoreCase("exit")) {
+                    System.out.println("Завершение работы программы...");
+                    break;
+                }
+
+                // Выполнение команды через менеджер
+                commandManager.executeCommand(commandArgs);
+            }
+
+            scanner.close();
+
+        } catch (Exception e) {
+            System.out.println("Критическая ошибка: " + e.getMessage());
+        }
+    }
+}
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\objects\Car.java ===
+
+package main.objects;
+
+// V1.0.1: Use IllegalArgumentException instead Exception, because always goes with throws
+public class Car {
+    private Boolean cool; //Поле не может быть null
+
+    public Car(Boolean cool) {
+        this.setCar(cool);
+    }
+
+    public boolean isCool() {
+        return this.cool;
+    }
+
+    public void setCar(Boolean cool) {
+        if (cool == null) throw new IllegalArgumentException("Cool can not be null!");
+        this.cool = cool;
+    }
+}
+
+// V1.0.0: Use Exception
+//public class Car {
+//    private Boolean cool; //Поле не может быть null
+//
+//    public Car(Boolean cool) throws Exception {
+//        this.setCar(cool);
+//    }
+//
+//    public void setCar(Boolean cool) throws Exception {
+//        if (cool == null) throw new Exception("Cool can not be null!");
+//        this.cool = cool;
+//    }
+//}
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\objects\Const.java ===
+
+package main.objects;
+
+public final class Const {
+    public static final int MAXVALUEX = 128;
+    public static final int MINVALUEX = -162;
+    public static final long MAXVALUEY = 440L;
+    public static final double MINVALUEIMPACTSPEED = -432d;
+
+//  relative
+//  getId, getName, getCoordinates, getCreationDate, isRealHero, isHasToothpick, getImpactSpeed, getSoundtrackName, getMinutesOfWaiting, getWeaponType, getCar
+//  public static String[] PREFIXES = {"get", "is"};
+    public static String[] FILEHEADER = {
+        "Id",
+        "Name",
+        "CoordinateX",
+        "CoordinateY",
+        "CreationDate",
+        "IsRealHero",
+        "IsHasToothpick",
+        "ImpactSpeed",
+        "SoundtrackName",
+        "MinutesOfWaiting",
+        "WeaponType",
+        "CarCool"
+    };
+
+//    absolute
+    public static String[] FILEHEADERMETHODS = {
+        "getId",
+        "getName",
+        "getCoordinates",
+        "getCreationDate",
+        "isRealHero",
+        "isHasToothpick",
+        "getImpactSpeed",
+        "getSoundtrackName",
+        "getMinutesOfWaiting",
+        "getWeaponType",
+        "getCar"
+    };
+}
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\objects\Coordinates.java ===
+
+package main.objects;
+import main.objects.Const;
+
+public class Coordinates {
+    private int x; //Значение поля должно быть больше -162
+    private long y; //Максимальное значение поля: 440
+
+    public Coordinates(int x, long y) {
+        setX(x);
+        setY(y);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public long getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        if (x <= Const.MINVALUEX || x >= Const.MAXVALUEX) {
+            throw new IllegalArgumentException("Значение поля X должно быть больше " + Const.MINVALUEX + " и меньше " + Const.MAXVALUEX + ". Получено: " + x);
+        }
+        this.x = x;
+    }
+
+    public void setY(long y) {
+        if (y > Const.MAXVALUEY) {
+            throw new IllegalArgumentException("Максимальное значение поля Y: " + Const.MAXVALUEY + ". Получено: " + y);
+        }
+        this.y = y;
+    }
+}
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\objects\HumanBeing.java ===
+
+package main.objects;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class HumanBeing implements Comparable<HumanBeing> {
+    private static final AtomicInteger humanCount = new AtomicInteger(0); // The first ID is 1
+    private final long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private final java.time.LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private String name; //Поле не может быть null, Строка не может быть пустой
+    private Coordinates coordinates; //Поле не может быть null
+    private boolean realHero;
+    private boolean hasToothpick;
+    private double impactSpeed; //Значение поля должно быть больше -432
+    private String soundtrackName; //Поле не может быть null
+    private int minutesOfWaiting;
+    private WeaponType weaponType; //Поле может быть null
+    private Car car; //Поле может быть null
+
+    // Private для того, чтобы HumanBeing не можно создать без аргументов
+    private HumanBeing() {
+        //Automatic value and cant set value
+        this.id = humanCount.incrementAndGet();
+        this.creationDate = java.time.LocalDateTime.now();
+    }
+
+    public HumanBeing(
+        String name,
+        Coordinates coordinates,
+        boolean realHero,
+        boolean hasToothpick,
+        double impactSpeed,
+        String soundtrackName,
+        int minutesOfWaiting,
+        WeaponType weaponType,
+        Car car
+    ) {
+        this();
+        this.setName(name);
+        this.setCoordinates(coordinates);
+        this.setRealHero(realHero);
+        this.setHasToothpick(hasToothpick);
+        this.setImpactSpeed(impactSpeed);
+        this.setSoundtrackName(soundtrackName);
+        this.setMinutesOfWaiting(minutesOfWaiting);
+        this.setWeaponType(weaponType);
+        this.setCar(car);
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Поле 'name' не может быть null, строка не может быть пустой");
+        }
+        this.name = name;
+    }
+
+    public Coordinates getCoordinates() {
+        return this.coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        if (coordinates == null) {
+            throw new IllegalArgumentException("Поле 'coordinates' не может быть null");
+        }
+        this.coordinates = coordinates;
+    }
+
+    public java.time.LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public boolean isRealHero() {
+        return realHero;
+    }
+
+    public void setRealHero(boolean realHero) {
+        this.realHero = realHero;
+    }
+
+    public boolean isHasToothpick() {
+        return hasToothpick;
+    }
+
+    public void setHasToothpick(boolean hasToothpick) {
+        this.hasToothpick = hasToothpick;
+    }
+
+    public double getImpactSpeed() {
+        return impactSpeed;
+    }
+
+    public void setImpactSpeed(double impactSpeed) {
+        if (impactSpeed <= -432) {
+            throw new IllegalArgumentException("Значение поля 'impactSpeed' должно быть больше " + Const.MINVALUEIMPACTSPEED + ". Получено: " + impactSpeed);
+        }
+        this.impactSpeed = impactSpeed;
+    }
+
+    public String getSoundtrackName() {
+        return soundtrackName;
+    }
+
+    public void setSoundtrackName(String soundtrackName) {
+        if (soundtrackName == null) {
+            throw new IllegalArgumentException("Значение поля 'soundtrackName' не может быть null");
+        }
+        this.soundtrackName = soundtrackName;
+    }
+
+    public int getMinutesOfWaiting() {
+        return minutesOfWaiting;
+    }
+
+    public void setMinutesOfWaiting(int minutesOfWaiting) {
+        if (minutesOfWaiting < 0) {
+            throw new IllegalArgumentException("Значение поля 'minutesOfWaiting' должно быть больше нуля. Получено: " + impactSpeed);
+        }
+        this.minutesOfWaiting = minutesOfWaiting;
+    }
+
+    public WeaponType getWeaponType() {
+        return weaponType;
+    }
+
+    public void setWeaponType(WeaponType weaponType) {
+        this.weaponType = weaponType;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    @Override
+    public boolean equals(Object newHuman) {
+        if(this == newHuman) { return true; };
+        if (newHuman == null || this.getClass() != newHuman.getClass()) { return false; };
+        HumanBeing thatHuman = (HumanBeing) newHuman;
+        return id == thatHuman.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(id);
+    }
+
+    @Override
+    public int compareTo(HumanBeing comparingHuman) {
+        return Long.compare(this.id, comparingHuman.getId());
+//        return this.getId().compareTo(comparingHuman.getId());
+    };
+}
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\objects\WeaponType.java ===
+
+package main.objects;
+
+public enum WeaponType {
+    HAMMER,
+    RIFLE,
+    KNIFE,
+    MACHINE_GUN;
+}
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\utils\CollectionManager.java ===
+
+package main.utils;
+
+import main.objects.HumanBeing;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.TreeSet;
+import java.util.function.Predicate;
+
+public class CollectionManager extends TreeSet<HumanBeing> {
+    private final java.time.LocalDateTime creationTime = java.time.LocalDateTime.now();
+
+    public CollectionManager() {
+        super(new Comparator<HumanBeing>() {
+            @Override
+            public int compare(HumanBeing o1, HumanBeing o2) {
+                return Long.compare(o1.getId(), o2.getId());
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                return super.equals(obj);
+            }
+        });
+    }
+
+    @Override
+    public int size() {
+        return super.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return super.isEmpty();
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return super.contains(o);
+    }
+
+    @Override
+    public boolean add(HumanBeing humanBeing) {
+        return super.add(humanBeing);
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends HumanBeing> c) {
+        return super.addAll(c);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return super.remove(o);
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return super.removeAll(c);
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+    }
+
+    public String getCollectionInfo() {
+        return this.toString();
+    }
+
+    public String toString() {
+        return "Информации о коллекции:" +
+                "\n>> Тип: " + this.getClass().getGenericSuperclass().getTypeName() +
+                "\n>> Дата инициализации: " + this.creationTime +
+                "\n>> Количество элементов: " + this.size();
+    }
+
+
+//    Поиск по id но фиксированный, не можем переиспользовать
+//    public HumanBeing getHumanById(long id) {
+//        for (HumanBeing h : this) {
+//            if(id == h.getId()) {
+//                return h;
+//            };
+//        };
+//        return null;
+//    }
+
+
+//  Используем Stream чтобы фильтровать первый элемент, который удовлетворяет условиям
+//  База
+    public HumanBeing getHumanBy(Predicate<HumanBeing> filter) {
+        return this.stream()
+                .filter(filter)
+                .findFirst()
+                .orElse(null); // Возврат null при ненайденном элементе
+    }
+
+    public HumanBeing getHumanById(long id) {
+        return this.getHumanBy(human -> human.getId() == id);
+    }
+    public HumanBeing getHumanByName(String name) {
+//        Redundant and long variant
+//        return this.getHumanBy(human -> human.getName().toLowerCase().equals(name.toLowerCase());
+        return this.getHumanBy(human -> human.getName().equalsIgnoreCase(name));
+    }
+}
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\utils\Command.java ===
+
+package main.utils;
+
+public interface Command {
+
+    String grtName();
+
+    String getDescription();
+
+    void execute(String[] arg);
+}
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\utils\CommandManager.java ===
+
+package main.utils;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class CommandManager {
+    // #1
+    private final Map<String, Command> commands = new HashMap<>();
+
+    // #2
+
+    public void register(String commandName, Command command) {
+        commands.put(commandName, command);
+    }
+
+    // #3
+
+    public void executeCommand(String[] args) {
+
+        if (args.length == 0 || args[0].trim().isEmpty()) {
+            return;
+        }
+
+        String commandName = args[0].toLowerCase();
+
+        Command command = commands.get(commandName);
+
+        if (command == null) {
+            System.out.println("Неизвестная команда: '" + commandName + "'. Введите 'help' для справки.");
+        } else {
+            try {
+                command.execute(args);
+            } catch (Exception e) {
+            System.out.println("Произошла ошибка при выполнении команды: " + e.getMessage());
+            }
+        }
+    }
+}
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\utils\FileManager.java ===
+
+package main.utils;
+
+public class FileManager{
+
+
+}
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\utils\HumanBeingReader.java ===
+
+package main.utils;
+
+import main.objects.Car;
+import main.objects.Coordinates;
+import main.objects.HumanBeing;
+import main.objects.WeaponType;
+
+public class HumanBeingReader {
+    private static Car convertCar(boolean isCool) {
+        return new Car(isCool);
+    }
+
+    private static Coordinates convertCoordinates(int x, long y) {
+        return new Coordinates(x, y);
+    }
+
+    public static HumanBeing convertLine(String line) {
+        String[] humanInfo = line.split(",");
+
+        Car car = convertCar(Boolean.getBoolean(humanInfo[11]));
+        Coordinates coordinates = convertCoordinates(
+                Integer.parseInt(humanInfo[2]),
+                Long.parseLong(humanInfo[3])
+        );
+        return new HumanBeing (
+                humanInfo[1],
+                coordinates,
+                Boolean.parseBoolean(humanInfo[5]),
+                Boolean.parseBoolean(humanInfo[6]),
+                Double.parseDouble(humanInfo[7]),
+                humanInfo[8],
+                Integer.parseInt(humanInfo[9]),
+                WeaponType.valueOf(humanInfo[10]),
+                car
+            );
+        }
+    }
+
+
+=== FILE: C:\Users\1\OneDrive\Desktop\study\sems 2\java\LAB_5\LAb_5\src\main\utils\InputManager.java ===
+
+package main.utils;
+import main.objects.Car;
+import main.objects.Coordinates;
+import main.objects.HumanBeing;
+import main.objects.WeaponType;
+
+import java.util.Scanner;
+import java.util.NoSuchElementException;
+
+public class InputManager {
+
+    private final Scanner scanner;
+
+    public InputManager(Scanner scanner) {
+        this.scanner = scanner;
+
+    }
+
+    // read name
+    public String readName() {
+        while (true) {
+            System.out.print("Введите имя: ");
+
+
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                System.out.println("Ошибка: имя не может быть пустым!");
+            } else {
+                return input;
+            }
+        }
+    }
+// read Координаты
+
+    // # X
+
+    public int readX() {
+        while (true) {
+            System.out.print("Введите координату X (X > -162): ");
+            String input = scanner.nextLine().trim();
+
+            try {
+
+                int x = Integer.parseInt(input);
+
+                if (x <= -162) {
+                    System.out.println("Ошибка: X должен быть больше -162!");
+                } else {
+                    return x;
+                }
+            } catch (NumberFormatException e) {
+
+                System.out.println("Ошибка: введите целое число!");
+            }
+        }
+    }
+
+    // # Y
+
+    public long readY() {
+        while (true) {
+            System.out.println("Введите координату Y (Макс. 440): ");
+
+            String input = scanner.nextLine().trim();
+
+            try {
+                long y = Long.parseLong(input);
+                if (y > 440) {
+                    System.out.println("Ошибка: значение Y не может превышать 440!");
+                } else {
+                    return y;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите целое число (типа long)!");
+            }
+        }
+    }
+
+    // realHero ??
+    public Boolean readBoolean(String message) {
+        while (true) {
+
+            System.out.println(message + " (true/false): ");
+            String input = scanner.nextLine().trim().toLowerCase();
+
+            if (input.equals("true")) return true;
+            if (input.equals("false")) return false;
+
+            System.out.println("Ошибка: введите 'true' или 'false'!");
+
+        }
+    }
+
+    // # impactSpeed
+    public double readImpactSpeed() {
+        while (true) {
+            System.out.print("Введите скорость удара (impactSpeed > -432): ");
+            String input = scanner.nextLine().trim();
+            try {
+                double speed = Double.parseDouble(input);
+                if (speed <= -432) {
+                    System.out.println("Ошибка: значение должно быть больше -432!");
+                } else {
+                    return speed;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите число (double)!");
+            }
+        }
+    }
+
+    // # WeaponType
+    public WeaponType readWeaponType() {
+        while (true) {
+            System.out.println("Выберите тип оружия: HAMMER, RIFLE, KNIFE, MACHINE_GUN");
+            System.out.print("Оставьте пустым для null: ");
+            String input = scanner.nextLine().trim().toUpperCase();
+
+            if (input.isEmpty()) return null;
+
+            try {
+                return WeaponType.valueOf(input); // يحول النص إلى قيمة من الـ Enum
+            } catch (IllegalArgumentException e) {
+                System.out.println("Ошибка: такого типа оружия нет في القائمة!");
+            }
+        }
+    }
+    public Car readCar() {
+        System.out.print("У него есть машина? (yes/no): ");
+        String answer = scanner.nextLine().trim().toLowerCase();
+
+        if (answer.equals("yes")) {
+            boolean isCool = readBoolean("Машина крутая?");
+            return new Car(isCool); // ننشئ كائن سيارة جديد
+        }
+        return null; // إذا قال لا، نرجع null (لا توجد سيارة)
+    }
+
+    // # readHumanBeing()
+    public HumanBeing readHumanBeing() {
+
+        String name = readName();
+        Coordinates coords = new Coordinates(readX(), readY());
+        boolean hero = readBoolean("Он настоящий герой?");
+        boolean toothpick = readBoolean("У него есть зубочистка?");
+        double speed = readImpactSpeed();
+
+        String soundtrack = readName();
+        int minutes = 0;
+        WeaponType weapon = readWeaponType();
+        Car car = readCar();
+
+
+        return new HumanBeing(name, coords, hero, toothpick, speed, soundtrack, minutes, weapon, car);
+    }
+}
+
