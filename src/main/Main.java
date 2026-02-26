@@ -33,7 +33,7 @@ public class Main {
 
             // --- 3. Загрузка коллекции из файла (Logic from Person 1) ---
             try {
-                main.FileManager fileManager = new FileManager(filePath);
+                main.utils.FileManager fileManager = new FileManager(filePath);
                 fileManager.readFile(collectionManager);
                 System.out.println("Коллекция успешно загружена. Количество элементов: " + collectionManager.size());
             } catch (Exception e) {

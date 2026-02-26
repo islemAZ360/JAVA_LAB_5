@@ -2,7 +2,7 @@ package main.utils;
 
 public interface Command {
 
-    String grtName();
+    String getName();
 
     String getDescription();
 
