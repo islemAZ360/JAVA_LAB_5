@@ -5,6 +5,7 @@ public final class Const {
     public static final int MINVALUEX = -162;
     public static final long MAXVALUEY = 440L;
     public static final double MINVALUEIMPACTSPEED = -432d;
+    public static final String FILEPATH = "data/data.csv";
 
 //  relative
 //  getId, getName, getCoordinates, getCreationDate, isRealHero, isHasToothpick, getImpactSpeed, getSoundtrackName, getMinutesOfWaiting, getWeaponType, getCar
