@@ -136,6 +136,30 @@ public class InputManager {
         }
         return null; // إذا قال لا، نرجع null (لا توجد سيارة)
     }
+    // # read Sound track Name
+    public String readSoundtrackName() {
+        while (true) {
+            System.out.print("Введите название саундтрека: ");
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Ошибка: название не может быть пустым!");
+            } else {
+                return input;
+            }
+        }
+    }
+    // # read Minutes Of Waiting
+    public int readMinutesOfWaiting() {
+        while (true) {
+            System.out.print("Введите время ожидания (минуты): ");
+            String input = scanner.nextLine().trim();
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите целое число!");
+            }
+        }
+    }
 
     // # readHumanBeing()
     public HumanBeing readHumanBeing() {
@@ -146,8 +170,8 @@ public class InputManager {
         boolean toothpick = readBoolean("У него есть зубочистка?");
         double speed = readImpactSpeed();
 
-        String soundtrack = readName();
-        int minutes = 0;
+        String soundtrack = readSoundtrackName();
+        int minutes = readMinutesOfWaiting();
         WeaponType weapon = readWeaponType();
         Car car = readCar();
 
