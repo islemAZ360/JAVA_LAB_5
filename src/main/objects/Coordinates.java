@@ -5,6 +5,8 @@ public class Coordinates {
     private int x; //Значение поля должно быть больше -162
     private long y; //Максимальное значение поля: 440
 
+    public Coordinates() {}
+
     public Coordinates(int x, long y) {
         setX(x);
         setY(y);

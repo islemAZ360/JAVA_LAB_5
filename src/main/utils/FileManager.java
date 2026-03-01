@@ -11,12 +11,18 @@ import java.util.Collection;
  */
 public class FileManager {
     private final String filePath;
+    private BufferedWriter writer;
 
     /**
      * Конструктор принимает путь к файлу из Main.
      */
     public FileManager(String filePath) {
         this.filePath = filePath;
+        try {
+            this.writer = new BufferedWriter(new FileWriter(this.filePath, true));
+        } catch (IOException e) {
+            System.out.println("Ошибка при сохранении в файл: " + e.getMessage());
+        }
     }
 
     /**
@@ -55,32 +61,27 @@ public class FileManager {
      * Сохраняет текущую коллекцию в файл в формате CSV.
      * Использует BufferedWriter для записи.
      */
-    public void save(Collection<HumanBeing> collection) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (HumanBeing human : collection) {
-                // Формируем строку CSV (порядок полей должен совпадать с Reader)
-                String csvLine = String.format("%d,%s,%d,%d,%s,%b,%b,%f,%s,%d,%s,%b",
-                        human.getId(),
-                        human.getName(),
-                        human.getCoordinates().getX(),
-                        human.getCoordinates().getY(),
-                        human.getCreationDate(),
-                        human.isRealHero(),
-                        human.isHasToothpick(),
-                        human.getImpactSpeed(),
-                        human.getSoundtrackName(),
-                        human.getMinutesOfWaiting(),
-                        (human.getWeaponType() == null ? "" : human.getWeaponType()),
-                        (human.getCar() == null ? "false" : human.getCar().isCool())
-                );
-
-                writer.write(csvLine);
-                writer.newLine(); // Переход на новую строку
-            }
-            writer.flush(); // Очистка буфера
-            System.out.println("Коллекция успешно сохранена в файл.");
-        } catch (IOException e) {
-            System.out.println("Ошибка при сохранении в файл: " + e.getMessage());
+    private void save(HumanBeing human) {
+        // Формируем строку CSV (порядок полей должен совпадать с Reader)
+        String csvLine = HumanBeingReader.extractInfo(human);
+        try {
+            this.writer.write(csvLine);
+            this.writer.newLine(); // Переход на новую строку
+            this.writer.flush(); // Очистка буфера
+        } catch (IOException E) {
+            System.out.println("Ошибка при сохранении в файл: " + E.getMessage());
         }
+    }
+
+    public void saveOne(HumanBeing human) {
+        this.save(human);
+        System.out.println("Human info успешно сохранена в файл.");
+    }
+
+    public void saveAll(Collection<HumanBeing> collection) {
+        for (HumanBeing human : collection) {
+            this.save(human);
+        }
+        System.out.println("Коллекция успешно сохранена в файл.");
     }
 }

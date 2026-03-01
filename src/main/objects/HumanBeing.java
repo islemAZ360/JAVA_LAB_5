@@ -1,4 +1,7 @@
 package main.objects;
+import main.utils.HumanBeingChecker;
+import main.utils.HumanBeingReader;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HumanBeing implements Comparable<HumanBeing> {
@@ -54,10 +57,7 @@ public class HumanBeing implements Comparable<HumanBeing> {
     }
 
     public void setName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Поле 'name' не может быть null, строка не может быть пустой");
-        }
-        this.name = name;
+        this.name = HumanBeingChecker.checkName(name);
     }
 
     public Coordinates getCoordinates() {
@@ -65,10 +65,7 @@ public class HumanBeing implements Comparable<HumanBeing> {
     }
 
     public void setCoordinates(Coordinates coordinates) {
-        if (coordinates == null) {
-            throw new IllegalArgumentException("Поле 'coordinates' не может быть null");
-        }
-        this.coordinates = coordinates;
+        this.coordinates = HumanBeingChecker.checkCoordinates(coordinates);
     }
 
     public java.time.LocalDateTime getCreationDate() {
@@ -80,7 +77,7 @@ public class HumanBeing implements Comparable<HumanBeing> {
     }
 
     public void setRealHero(boolean realHero) {
-        this.realHero = realHero;
+        this.realHero = HumanBeingChecker.checkIsRealHero(realHero);
     }
 
     public boolean isHasToothpick() {
@@ -88,7 +85,7 @@ public class HumanBeing implements Comparable<HumanBeing> {
     }
 
     public void setHasToothpick(boolean hasToothpick) {
-        this.hasToothpick = hasToothpick;
+        this.hasToothpick = HumanBeingChecker.checkIsHasToothpick(hasToothpick);
     }
 
     public double getImpactSpeed() {
@@ -96,10 +93,7 @@ public class HumanBeing implements Comparable<HumanBeing> {
     }
 
     public void setImpactSpeed(double impactSpeed) {
-        if (impactSpeed <= -432) {
-            throw new IllegalArgumentException("Значение поля 'impactSpeed' должно быть больше " + Const.MINVALUEIMPACTSPEED + ". Получено: " + impactSpeed);
-        }
-        this.impactSpeed = impactSpeed;
+        this.impactSpeed = HumanBeingChecker.checkImpactSpeed(impactSpeed);
     }
 
     public String getSoundtrackName() {
@@ -107,10 +101,7 @@ public class HumanBeing implements Comparable<HumanBeing> {
     }
 
     public void setSoundtrackName(String soundtrackName) {
-        if (soundtrackName == null) {
-            throw new IllegalArgumentException("Значение поля 'soundtrackName' не может быть null");
-        }
-        this.soundtrackName = soundtrackName;
+        this.soundtrackName = HumanBeingChecker.checkSoundtrackName(soundtrackName);
     }
 
     public int getMinutesOfWaiting() {
@@ -118,10 +109,7 @@ public class HumanBeing implements Comparable<HumanBeing> {
     }
 
     public void setMinutesOfWaiting(int minutesOfWaiting) {
-        if (minutesOfWaiting < 0) {
-            throw new IllegalArgumentException("Значение поля 'minutesOfWaiting' должно быть больше нуля. Получено: " + impactSpeed);
-        }
-        this.minutesOfWaiting = minutesOfWaiting;
+        this.minutesOfWaiting = HumanBeingChecker.checkMinutesOfWaiting(minutesOfWaiting);
     }
 
     public WeaponType getWeaponType() {
@@ -129,7 +117,7 @@ public class HumanBeing implements Comparable<HumanBeing> {
     }
 
     public void setWeaponType(WeaponType weaponType) {
-        this.weaponType = weaponType;
+        this.weaponType = HumanBeingChecker.checkWeaponType(weaponType);
     }
 
     public Car getCar() {
@@ -137,7 +125,7 @@ public class HumanBeing implements Comparable<HumanBeing> {
     }
 
     public void setCar(Car car) {
-        this.car = car;
+        this.car = HumanBeingChecker.checkCar(car);
     }
 
     @Override
@@ -157,5 +145,5 @@ public class HumanBeing implements Comparable<HumanBeing> {
     public int compareTo(HumanBeing comparingHuman) {
         return Long.compare(this.id, comparingHuman.getId());
 //        return this.getId().compareTo(comparingHuman.getId());
-    };
+    }
 }

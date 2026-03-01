@@ -1,8 +1,5 @@
 package main.utils;
-import main.objects.Car;
-import main.objects.Coordinates;
-import main.objects.HumanBeing;
-import main.objects.WeaponType;
+import main.objects.*;
 
 import java.util.Scanner;
 import java.util.NoSuchElementException;
@@ -10,9 +7,11 @@ import java.util.NoSuchElementException;
 public class InputManager {
 
     private final Scanner scanner;
+    private final Coordinates coordinatesChecker;
 
     public InputManager(Scanner scanner) {
         this.scanner = scanner;
+        this.coordinatesChecker = new Coordinates();
 
     }
 
@@ -21,14 +20,15 @@ public class InputManager {
         while (true) {
             System.out.print("Введите имя: ");
 
-
             String input = scanner.nextLine().trim();
 
-            if (input.isEmpty()) {
-                System.out.println("Ошибка: имя не может быть пустым!");
-            } else {
-                return input;
+            try {
+                HumanBeingChecker.checkName(input);
+            } catch (IllegalArgumentException E) {
+                System.out.printf("Ошибка: %s\n", E.getMessage());
+                continue;
             }
+            return input;
         }
     }
 // read Координаты
@@ -37,18 +37,21 @@ public class InputManager {
 
     public int readX() {
         while (true) {
-            System.out.print("Введите координату X (X > -162): ");
+            System.out.printf("Введите координату X (X > %d): ", Const.MINVALUEX);
             String input = scanner.nextLine().trim();
 
             try {
-
                 int x = Integer.parseInt(input);
 
-                if (x <= -162) {
-                    System.out.println("Ошибка: X должен быть больше -162!");
-                } else {
-                    return x;
+                try {
+                    coordinatesChecker.setX(x);
+                } catch (IllegalArgumentException E) {
+                    System.out.printf("Ошибка: %s\n", E.getMessage());
+                    continue;
                 }
+
+                return x;
+
             } catch (NumberFormatException e) {
 
                 System.out.println("Ошибка: введите целое число!");
@@ -60,17 +63,20 @@ public class InputManager {
 
     public long readY() {
         while (true) {
-            System.out.println("Введите координату Y (Макс. 440): ");
+            System.out.printf("Введите координату Y (Макс. %d): ", Const.MAXVALUEY);
 
             String input = scanner.nextLine().trim();
 
             try {
                 long y = Long.parseLong(input);
-                if (y > 440) {
-                    System.out.println("Ошибка: значение Y не может превышать 440!");
-                } else {
-                    return y;
+                try {
+                    coordinatesChecker.setY(y);
+                } catch (IllegalArgumentException E) {
+                    System.out.printf("Ошибка: %s\n", E.getMessage());
+                    continue;
                 }
+                return y;
+
             } catch (NumberFormatException e) {
                 System.out.println("Ошибка: введите целое число (типа long)!");
             }
@@ -80,29 +86,37 @@ public class InputManager {
     // realHero ??
     public Boolean readBoolean(String message) {
         while (true) {
-
-            System.out.println(message + " (true/false): ");
+            System.out.print(message + " (true/false): ");
             String input = scanner.nextLine().trim().toLowerCase();
 
-            if (input.equals("true")) return true;
-            if (input.equals("false")) return false;
+            if (!input.equals("true") && !input.equals("false")) {
+                System.out.println("Ошибка: введите 'true' или 'false'!");
+                continue;
+            }
 
-            System.out.println("Ошибка: введите 'true' или 'false'!");
-
+            boolean isRealHero = Boolean.parseBoolean(input);
+            try {
+                HumanBeingChecker.checkIsRealHero(isRealHero);
+                return isRealHero;
+            } catch (IllegalArgumentException E) {
+                System.out.printf("Ошибка: %s\n", E.getMessage());
+            }
         }
     }
 
     // # impactSpeed
     public double readImpactSpeed() {
         while (true) {
-            System.out.print("Введите скорость удара (impactSpeed > -432): ");
+            System.out.printf("Введите скорость удара (impactSpeed > %f): ", Const.MINVALUEIMPACTSPEED);
             String input = scanner.nextLine().trim();
             try {
                 double speed = Double.parseDouble(input);
-                if (speed <= -432) {
-                    System.out.println("Ошибка: значение должно быть больше -432!");
-                } else {
+
+                try {
+                    HumanBeingChecker.checkImpactSpeed(speed);
                     return speed;
+                } catch (IllegalArgumentException E) {
+                    System.out.printf("Ошибка: %f\n", Const.MINVALUEIMPACTSPEED);
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Ошибка: введите число (double)!");
@@ -120,31 +134,40 @@ public class InputManager {
             if (input.isEmpty()) return null;
 
             try {
-                return WeaponType.valueOf(input); // يحول النص إلى قيمة من الـ Enum
+                return HumanBeingChecker.checkWeaponType(WeaponType.valueOf(input)); // يحول النص إلى قيمة من الـ Enum
             } catch (IllegalArgumentException e) {
-                System.out.println("Ошибка: такого типа оружия нет في القائمة!");
+                System.out.printf("Ошибка: %s\n", e.getMessage());
             }
         }
     }
-    public Car readCar() {
-        System.out.print("У него есть машина? (yes/no): ");
-        String answer = scanner.nextLine().trim().toLowerCase();
 
-        if (answer.equals("yes")) {
-            boolean isCool = readBoolean("Машина крутая?");
-            return new Car(isCool); // ننشئ كائن سيارة جديد
+    public Car readCar() {
+        while (true) {
+            System.out.print("У него есть машина? (yes/no): ");
+            String answer = scanner.nextLine().trim().toLowerCase();
+
+            if (answer.equals("yes")) {
+                boolean isCool = readBoolean("Машина крутая?");
+                try {
+                    return HumanBeingChecker.checkCar(new Car(isCool)); // ننشئ كائن سيارة جديد
+                } catch (Exception e) {
+                    System.out.printf("Ошибка: %s\n", e.getMessage());
+                }
+            } else if (answer.equals("no")){
+                return null;
+            }
         }
-        return null; // إذا قال لا، نرجع null (لا توجد سيارة)
+//            return null; // إذا قال لا، نرجع null (لا توجد سيارة)
     }
     // # read Sound track Name
     public String readSoundtrackName() {
         while (true) {
             System.out.print("Введите название саундтрека: ");
             String input = scanner.nextLine().trim();
-            if (input.isEmpty()) {
-                System.out.println("Ошибка: название не может быть пустым!");
-            } else {
-                return input;
+            try {
+                return HumanBeingChecker.checkSoundtrackName(input);
+            } catch (IllegalArgumentException e) {
+                System.out.printf("Ошибка: %s\n", e.getMessage());
             }
         }
     }
@@ -154,7 +177,12 @@ public class InputManager {
             System.out.print("Введите время ожидания (минуты): ");
             String input = scanner.nextLine().trim();
             try {
-                return Integer.parseInt(input);
+                Integer.parseInt(input);
+                try {
+                    return HumanBeingChecker.checkMinutesOfWaiting(Integer.parseInt(input));
+                } catch (IllegalArgumentException e) {
+                    System.out.printf("Ошибка: %s\n", e.getMessage());
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Ошибка: введите целое число!");
             }
@@ -165,7 +193,7 @@ public class InputManager {
     public HumanBeing readHumanBeing() {
 
         String name = readName();
-        Coordinates coords = new Coordinates(readX(), readY());
+        Coordinates coors = new Coordinates(readX(), readY());
         boolean hero = readBoolean("Он настоящий герой?");
         boolean toothpick = readBoolean("У него есть зубочистка?");
         double speed = readImpactSpeed();
@@ -175,8 +203,7 @@ public class InputManager {
         WeaponType weapon = readWeaponType();
         Car car = readCar();
 
-
-        return new HumanBeing(name, coords, hero, toothpick, speed, soundtrack, minutes, weapon, car);
+        return new HumanBeing(name, coors, hero, toothpick, speed, soundtrack, minutes, weapon, car);
     }
 }
 

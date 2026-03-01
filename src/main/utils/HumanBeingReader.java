@@ -17,7 +17,7 @@ public class HumanBeingReader {
     public static HumanBeing convertLine(String line) {
         String[] humanInfo = line.split(",");
 
-        Car car = convertCar(Boolean.getBoolean(humanInfo[11]));
+        Car car = convertCar(Boolean.parseBoolean(humanInfo[11]));
         Coordinates coordinates = convertCoordinates(
                 Integer.parseInt(humanInfo[2]),
                 Long.parseLong(humanInfo[3])
@@ -34,5 +34,22 @@ public class HumanBeingReader {
                 car
             );
         }
+
+    public static String extractInfo(HumanBeing human) {
+        return String.format("%d,%s,%d,%d,%s,%b,%b,%s,%s,%d,%s,%b",
+                human.getId(),
+                human.getName(),
+                human.getCoordinates().getX(),
+                human.getCoordinates().getY(),
+                human.getCreationDate(),
+                human.isRealHero(),
+                human.isHasToothpick(),
+                "%s".formatted(human.getImpactSpeed()).replace(",", "."),
+                human.getSoundtrackName(),
+                human.getMinutesOfWaiting(),
+                (human.getWeaponType() == null ? "" : human.getWeaponType()),
+                (human.getCar() == null ? "false" : human.getCar().isCool())
+        );
     }
+}
 

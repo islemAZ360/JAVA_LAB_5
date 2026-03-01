@@ -9,7 +9,7 @@ public class CommandManager {
 
     // #2
 
-    public void register(String commandName, Command command) {
+    public void registerCommand(String commandName, Command command) {
         commands.put(commandName, command);
     }
 
@@ -34,5 +34,9 @@ public class CommandManager {
             System.out.println("Произошла ошибка при выполнении команды: " + e.getMessage());
             }
         }
+    }
+
+    public Map<String, Command> getCommands() {
+        return commands;
     }
 }

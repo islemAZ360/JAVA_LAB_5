@@ -1,5 +1,6 @@
 package main.utils;
 
+import main.objects.Const;
 import main.objects.HumanBeing;
 
 import java.util.Collection;
@@ -73,6 +74,14 @@ public class CollectionManager extends TreeSet<HumanBeing> {
                 "\n>> Тип: " + this.getClass().getGenericSuperclass().getTypeName() +
                 "\n>> Дата инициализации: " + this.creationTime +
                 "\n>> Количество элементов: " + this.size();
+    }
+
+    public void show() {
+        System.out.printf("%-4s | %-20s | %-12s | %-12s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", Const.FILEHEADER);
+
+        for (HumanBeing human: this) {
+            System.out.printf("%-4s | %-20s | %-12s | %-12s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", HumanBeingReader.extractInfo(human).split(","));
+        }
     }
 
 
