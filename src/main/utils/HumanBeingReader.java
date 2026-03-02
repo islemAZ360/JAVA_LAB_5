@@ -30,7 +30,7 @@ public class HumanBeingReader {
                 Double.parseDouble(humanInfo[7]),
                 humanInfo[8],
                 Integer.parseInt(humanInfo[9]),
-                WeaponType.valueOf(humanInfo[10]),
+                humanInfo[10].isEmpty()? null:WeaponType.valueOf(humanInfo[10]),
                 car
             );
         }
