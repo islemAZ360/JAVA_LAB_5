@@ -2,6 +2,7 @@ package main.utils;
 
 import main.objects.HumanBeing;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeSet;
@@ -103,6 +104,11 @@ public class CollectionManager extends TreeSet<HumanBeing> {
 //        Redundant and long variant
 //        return this.getHumanBy(human -> human.getName().toLowerCase().equals(name.toLowerCase());
         return this.getHumanBy(human -> human.getName().equalsIgnoreCase(name));
+    }
+
+    //add getter
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 }
 
