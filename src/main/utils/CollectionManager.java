@@ -95,7 +95,6 @@ public class CollectionManager extends TreeSet<HumanBeing> {
 //        return null;
 //    }
 
-
 //  Используем Stream чтобы фильтровать первый элемент, который удовлетворяет условиям
 //  База
     public HumanBeing getHumanBy(Predicate<HumanBeing> filter) {
@@ -112,6 +111,21 @@ public class CollectionManager extends TreeSet<HumanBeing> {
 //        Redundant and long variant
 //        return this.getHumanBy(human -> human.getName().toLowerCase().equals(name.toLowerCase());
         return this.getHumanBy(human -> human.getName().equalsIgnoreCase(name));
+    }
+    public boolean removeById(long id) {
+        HumanBeing human = getHumanById(id);
+        if (human != null) {
+            return remove(human);
+        }
+        return false;
+    }
+
+    public boolean update(long id, HumanBeing newHuman) {
+        return false;
+    }
+
+    public HumanBeing getCollection() {
+        return null;
     }
 }
 

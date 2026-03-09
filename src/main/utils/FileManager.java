@@ -61,7 +61,7 @@ public class FileManager {
      * Сохраняет текущую коллекцию в файл в формате CSV.
      * Использует BufferedWriter для записи.
      */
-    private void save(HumanBeing human) {
+    public void save(HumanBeing human) {
         // Формируем строку CSV (порядок полей должен совпадать с Reader)
         String csvLine = HumanBeingReader.extractInfo(human);
         try {
