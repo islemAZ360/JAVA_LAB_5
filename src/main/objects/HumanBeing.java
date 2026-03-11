@@ -75,6 +75,29 @@ public class HumanBeing implements Comparable<HumanBeing> {
         this.setCar(car);
     }
 
+    public HumanBeing(
+        String name,
+        String coorX,
+        String coorY,
+        String realHero,
+        String hasToothpick,
+        String impactSpeed,
+        String soundtrackName,
+        String minutesOfWaiting,
+        String weaponType,
+        String car
+    ) {
+        this();
+        this.setName(name);
+        this.setCoordinates(new Coordinates(Integer.parseInt(coorX), Long.parseLong(coorY)));
+        this.setRealHero(Boolean.parseBoolean(realHero));
+        this.setHasToothpick(Boolean.parseBoolean(hasToothpick));
+        this.setImpactSpeed(Double.parseDouble(impactSpeed));
+        this.setSoundtrackName(soundtrackName);
+        this.setMinutesOfWaiting(Integer.parseInt(minutesOfWaiting));
+        this.setWeaponType(WeaponType.valueOf(weaponType));
+        this.setCar(new Car(Boolean.parseBoolean(car)));
+    }
 
     public long getId() {
         return this.id;

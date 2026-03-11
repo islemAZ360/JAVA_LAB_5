@@ -3,7 +3,10 @@ package main.utils.commands;
 import main.objects.HumanBeing;
 import main.utils.CollectionManager;
 import main.utils.Command;
+import main.utils.HumanBeingReader;
 import main.utils.InputManager;
+
+import java.util.Arrays;
 
 /**
  * Команда add {element}: добавляет новый элемент в коллекцию.
@@ -33,7 +36,25 @@ public class AddCommand implements Command {
     @Override
     public void execute(String[] args) {
         try {
-            HumanBeing humanBeing = this.inputManager.readHumanBeing();
+            HumanBeing humanBeing;
+            if(args.length == 11) {
+                humanBeing = new HumanBeing(
+                        args[1],
+                        args[2],
+                        args[3],
+                        args[4],
+                        args[5],
+                        args[6],
+                        args[7],
+                        args[8],
+                        args[9],
+                        args[10]
+                );
+            } else if (args.length == 1) {
+                humanBeing = this.inputManager.readHumanBeing();
+            } else {
+                throw new IllegalArgumentException("Entry arguments for HumanBeing are not correct.");
+            }
 
             boolean added = collectionManager.add(humanBeing);
 

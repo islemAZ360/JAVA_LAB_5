@@ -1,4 +1,7 @@
 show
 info
 help
-add
+add TestAddByScript 100 165 true true 555.0 BipBip 2 HAMMER true
+add TestAddByScript 100 165 true true 555.0 BipBip 2 HAMMER true
+show
+save
