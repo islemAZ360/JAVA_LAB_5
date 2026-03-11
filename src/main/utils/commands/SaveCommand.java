@@ -21,14 +21,17 @@ public class SaveCommand implements Command {
 
     @Override
     public String getDescription() {
-        return "сохранить коллекцию в файл";
+        return "save : сохранить коллекцию в файл";
     }
 
     @Override
     public void execute(String[] args) {
+        if (collectionManager.isEmpty()) {
+            System.out.println("Коллекция пуста. Файл будет очищен.");
+            // Vẫn gọi saveAll để tạo file rỗng hoặc xóa nội dung
+        }
 
-        fileManager.save(collectionManager.getCollection());
-
-        System.out.println("Коллекция сохранена в файл.");
+        fileManager.saveAll(collectionManager);
+        // Không cần in thêm vì saveAll đã in thông báo
     }
 }

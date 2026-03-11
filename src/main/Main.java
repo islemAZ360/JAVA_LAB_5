@@ -41,41 +41,52 @@ public class Main {
         }
         try {
             // --- 3. Загрузка коллекции из файла (Logic from Person 1) ---
+//            try {
+//                main.utils.FileManager fileManager = new FileManager(filePath);
+//                fileManager.readFile(collectionManager);
+//                System.out.println("Коллекция успешно загружена. Количество элементов: " + collectionManager.size());
+//            } catch (Exception e) {
+//                System.out.println("Ошибка при чтении файла (или файл не найден). Запуск с пустой коллекцией.");
+//            }
+//
+//            FileManager fileManager = new FileManager(filePath);
+
+            FileManager fileManager = null;
+
             try {
-                main.utils.FileManager fileManager = new FileManager(filePath);
-                fileManager.readFile(collectionManager);
+                // Tạo FileManager duy nhất
+                fileManager = new FileManager(filePath);
+                fileManager.readFileAndLoadHumanBeing(collectionManager);
                 System.out.println("Коллекция успешно загружена. Количество элементов: " + collectionManager.size());
+
             } catch (Exception e) {
                 System.out.println("Ошибка при чтении файла (или файл не найден). Запуск с пустой коллекцией.");
+                // Vẫn tạo FileManager để có thể save sau này
+                fileManager = new FileManager(filePath);
             }
 
-            FileManager fileManager = new FileManager(filePath);
+            commandManager.registerCommand("help", new HelpCommand(commandManager));
+            commandManager.registerCommand("info", new InfoCommand(collectionManager));
+            commandManager.registerCommand("show", new ShowCommand(collectionManager));
 
-            commandManager.registerCommand("help",new HelpCommand(commandManager));
-            commandManager.registerCommand("info",new InfoCommand(collectionManager));
-            commandManager.registerCommand("show",new ShowCommand(collectionManager));
-            commandManager.registerCommand("add",new AddCommand(collectionManager, inputManager, fileManager));
+            commandManager.registerCommand("add", new AddCommand(collectionManager,inputManager));
+            commandManager.registerCommand("update", new UpdateCommand(collectionManager,inputManager));
+            commandManager.registerCommand("remove_by_id", new RemoveByIdCommand(collectionManager));
+            commandManager.registerCommand("clear", new ClearCommand(collectionManager));
 
-//            System.out.printf("\n~~~~~~ Welcome %s to our pro java system! ~~~~~~\n", username);
-//            System.out.println("Choose any below variant: [number]");
-//            System.out.println("1. Get HumanBeing by id");
-//            System.out.println("2. Get HumanBeing by name");
-//            System.out.print("Enter your option: ");
-//            int option = Integer.parseInt(scanner.nextLine());
+            commandManager.registerCommand("save", new SaveCommand(collectionManager, fileManager));
 
-//            switch (option) {
-//                case 1:
-//                    System.out.print("Enter id: ");
-//                    System.out.println(collectionManager.getHumanById(Integer.parseInt(scanner.nextLine())));
-//                    break;
-//                case 2:
-//                    System.out.print("Enter name: ");
-//                    System.out.println(collectionManager.getHumanByName(scanner.nextLine()));
-//                    break;
-//                default:
-//                    System.out.println("Option " + option + " does not exists!");
-//                    break;
-//            }
+            commandManager.registerCommand("add_if_max", new AddIfMaxCommand(collectionManager, inputManager));
+            commandManager.registerCommand("add_if_min", new AddIfMinCommand(collectionManager, inputManager));
+
+            commandManager.registerCommand("remove_greater", new RemoveGreaterCommand(collectionManager));
+
+            commandManager.registerCommand("filter_contains_name", new FilterContainsNameCommand(collectionManager));
+            commandManager.registerCommand("filter_less_than_minutes_of_waiting", new FilterLessThanMinutesOfWaitingCommand(collectionManager));
+            commandManager.registerCommand("filter_greater_than_car", new FilterGreaterThanCarCommand(collectionManager));
+
+//            commandManager.registerCommand("exit", new ExitCommand());
+
 
             //  5. Интерактивный цикл (Interactive Loop - Logic from Person 2)
             System.out.println("\nПрограмма готова к работе! Введите 'help' для подержки || 'exit' для выхода.");

@@ -1,6 +1,7 @@
 package main.utils;
 import main.objects.*;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.NoSuchElementException;
 
@@ -204,6 +205,31 @@ public class InputManager {
         Car car = readCar();
 
         return new HumanBeing(name, coors, hero, toothpick, speed, soundtrack, minutes, weapon, car);
+    }
+
+    // Thêm vào class InputManager
+//    public HumanBeing readHumanBeingWithId(long id) {
+//        String name = readName();
+//        Coordinates coors = new Coordinates(readX(), readY());
+//        boolean hero = readBoolean("Он настоящий герой?");
+//        boolean toothpick = readBoolean("У него есть зубочистка?");
+//        double speed = readImpactSpeed();
+//
+//        String soundtrack = readSoundtrackName();
+//        int minutes = readMinutesOfWaiting();
+//        WeaponType weapon = readWeaponType();
+//        Car car = readCar();
+//
+//        // Sử dụng constructor có ID
+//        return new HumanBeing(id, java.time.LocalDate.now().toString(), name, coors, hero, toothpick, speed, soundtrack, minutes, weapon, car);
+//    }
+
+    public HumanBeing createHumanBeingWithId(long id) {
+        HumanBeing human = readHumanBeing();
+        String humanInfo = HumanBeingReader.extractInfo(human);
+        String[] infoFields = humanInfo.split(",");
+        infoFields[0] = String.valueOf(id);
+        return HumanBeingReader.convertLine(String.join(",", infoFields));
     }
 }
 

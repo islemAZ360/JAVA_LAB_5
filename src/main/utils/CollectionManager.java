@@ -115,17 +115,82 @@ public class CollectionManager extends TreeSet<HumanBeing> {
     public boolean removeById(long id) {
         HumanBeing human = getHumanById(id);
         if (human != null) {
-            return remove(human);
+            return this.remove(human);
         }
         return false;
     }
 
     public boolean update(long id, HumanBeing newHuman) {
-        return false;
+        HumanBeing oldHuman = getHumanById(id);
+        if (oldHuman == null) {
+            return false;
+        }
+
+        // Xóa element cũ
+//        this.remove(oldHuman);
+        try {
+            oldHuman.setName(newHuman.getName());
+            oldHuman.setCoordinates(newHuman.getCoordinates());
+            oldHuman.setRealHero(newHuman.isRealHero());
+            oldHuman.setHasToothpick(newHuman.isHasToothpick());
+            oldHuman.setImpactSpeed(newHuman.getImpactSpeed());
+            oldHuman.setSoundtrackName(newHuman.getSoundtrackName());
+            oldHuman.setMinutesOfWaiting(newHuman.getMinutesOfWaiting());
+            oldHuman.setWeaponType(newHuman.getWeaponType());
+            oldHuman.setCar(newHuman.getCar());
+        } catch (Exception e) {
+            System.err.println("bug from update method in CollectionManager");
+        }
+
+        // Tạo element mới với ID và creationDate cũ
+        // Cần thêm constructor trong HumanBeing để copy ID và creationDate
+//        HumanBeing updatedHuman = new HumanBeing(
+//                newHuman.getName(),
+//                newHuman.getCoordinates(),
+//                newHuman.isRealHero(),
+//                newHuman.isHasToothpick(),
+//                newHuman.getImpactSpeed(),
+//                newHuman.getSoundtrackName(),
+//                newHuman.getMinutesOfWaiting(),
+//                newHuman.getWeaponType(),
+//                newHuman.getCar()
+//        );
+
+
+
+        // Cần set ID và creationDate cũ (hiện tại không thể do private)
+        return true;
     }
 
-    public HumanBeing getCollection() {
-        return null;
+    public HumanBeing getMax() {
+        if (this.isEmpty()) return null;
+        return this.stream()
+                .max(Comparator.comparingLong(HumanBeing::getId))
+                .orElse(null);
+    }
+
+    public Long getMaxId() {
+        return getMax().getId();
+    }
+
+    public HumanBeing getMin() {
+        if (this.isEmpty()) return null;
+        return this.stream()
+                .min(Comparator.comparingLong(HumanBeing::getId))
+                .orElse(null);
+    }
+
+    public void removeGreater(HumanBeing element) {
+        // Tạo list tạm để tránh ConcurrentModificationException
+        java.util.ArrayList<HumanBeing> toRemove = new java.util.ArrayList<>();
+
+        for (HumanBeing human : this) {
+            if (human.compareTo(element) > 0) { // So sánh theo ID (lớn hơn)
+                toRemove.add(human);
+            }
+        }
+
+        this.removeAll(toRemove);
     }
 }
 
