@@ -2,10 +2,7 @@ package main;
 
 import main.objects.Const;
 import main.objects.HumanBeing;
-import main.utils.CollectionManager;
-import main.utils.CommandManager;
-import main.utils.FileManager;
-import main.utils.InputManager;
+import main.utils.*;
 import main.utils.commands.*;
 
 import java.nio.charset.StandardCharsets;
@@ -40,30 +37,21 @@ public class Main {
             System.err.println("Внимание: Путь к файлу не передан через аргументы. Используется файл по умолчанию: " + filePath);
         }
         try {
-            // --- 3. Загрузка коллекции из файла (Logic from Person 1) ---
-//            try {
-//                main.utils.FileManager fileManager = new FileManager(filePath);
-//                fileManager.readFile(collectionManager);
-//                System.out.println("Коллекция успешно загружена. Количество элементов: " + collectionManager.size());
-//            } catch (Exception e) {
-//                System.out.println("Ошибка при чтении файла (или файл не найден). Запуск с пустой коллекцией.");
-//            }
-//
-//            FileManager fileManager = new FileManager(filePath);
-
-            FileManager fileManager = null;
+            HumanBeingFileManager humanBeingFileManager;
 
             try {
                 // Tạo FileManager duy nhất
-                fileManager = new FileManager(filePath);
-                fileManager.readFileAndLoadHumanBeing(collectionManager);
+                humanBeingFileManager = new HumanBeingFileManager(filePath);
+                humanBeingFileManager.readFileAndLoadHumanBeing(collectionManager);
                 System.out.println("Коллекция успешно загружена. Количество элементов: " + collectionManager.size());
 
             } catch (Exception e) {
                 System.out.println("Ошибка при чтении файла (или файл не найден). Запуск с пустой коллекцией.");
                 // Vẫn tạo FileManager để có thể save sau này
-                fileManager = new FileManager(filePath);
+                humanBeingFileManager = new HumanBeingFileManager(filePath);
             }
+
+//            CommandFileManager commandFileManager = new CommandFileManager(Const.SCRIPTFILEPATH);
 
             commandManager.registerCommand("help", new HelpCommand(commandManager));
             commandManager.registerCommand("info", new InfoCommand(collectionManager));
@@ -74,7 +62,7 @@ public class Main {
             commandManager.registerCommand("remove_by_id", new RemoveByIdCommand(collectionManager));
             commandManager.registerCommand("clear", new ClearCommand(collectionManager));
 
-            commandManager.registerCommand("save", new SaveCommand(collectionManager, fileManager));
+            commandManager.registerCommand("save", new SaveCommand(collectionManager, humanBeingFileManager));
 
             commandManager.registerCommand("add_if_max", new AddIfMaxCommand(collectionManager, inputManager));
             commandManager.registerCommand("add_if_min", new AddIfMinCommand(collectionManager, inputManager));
@@ -85,6 +73,7 @@ public class Main {
             commandManager.registerCommand("filter_less_than_minutes_of_waiting", new FilterLessThanMinutesOfWaitingCommand(collectionManager));
             commandManager.registerCommand("filter_greater_than_car", new FilterGreaterThanCarCommand(collectionManager));
 
+            commandManager.registerCommand("filter_greater_than_car", new ExecuteScriptCommand(collectionManager, commandManager, humanBeingFileManager));
 //            commandManager.registerCommand("exit", new ExitCommand());
 
 

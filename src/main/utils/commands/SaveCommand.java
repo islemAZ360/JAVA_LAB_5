@@ -3,15 +3,16 @@ package main.utils.commands;
 import main.utils.Command;
 import main.utils.FileManager;
 import main.utils.CollectionManager;
+import main.utils.HumanBeingFileManager;
 
 public class SaveCommand implements Command {
 
     private final CollectionManager collectionManager;
-    private final FileManager fileManager;
+    private final HumanBeingFileManager humanBeingFileManager;
 
-    public SaveCommand(CollectionManager collectionManager, FileManager fileManager) {
+    public SaveCommand(CollectionManager collectionManager, HumanBeingFileManager humanBeingFileManager) {
         this.collectionManager = collectionManager;
-        this.fileManager = fileManager;
+        this.humanBeingFileManager = humanBeingFileManager;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class SaveCommand implements Command {
             // Vẫn gọi saveAll để tạo file rỗng hoặc xóa nội dung
         }
 
-        fileManager.saveAll(collectionManager);
+        humanBeingFileManager.saveAll(collectionManager);
         // Không cần in thêm vì saveAll đã in thông báo
     }
 }
