@@ -1,1 +1,4 @@
 show
+info
+help
+add

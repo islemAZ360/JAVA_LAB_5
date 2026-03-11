@@ -73,7 +73,7 @@ public class Main {
             commandManager.registerCommand("filter_less_than_minutes_of_waiting", new FilterLessThanMinutesOfWaitingCommand(collectionManager));
             commandManager.registerCommand("filter_greater_than_car", new FilterGreaterThanCarCommand(collectionManager));
 
-            commandManager.registerCommand("filter_greater_than_car", new ExecuteScriptCommand(collectionManager, commandManager, humanBeingFileManager));
+            commandManager.registerCommand("run_script_file", new ExecuteScriptCommand(collectionManager, commandManager, humanBeingFileManager));
 //            commandManager.registerCommand("exit", new ExitCommand());
 
 
@@ -113,3 +113,5 @@ public class Main {
         }
     }
 }
+
+// run_script_file scripts/scripts.txt
