@@ -23,6 +23,8 @@ public class HumanBeingReader {
                 Long.parseLong(humanInfo[3])
         );
         return new HumanBeing (
+                Long.parseLong(humanInfo[0]),
+                humanInfo[4],
                 humanInfo[1],
                 coordinates,
                 Boolean.parseBoolean(humanInfo[5]),
@@ -51,5 +53,9 @@ public class HumanBeingReader {
                 (human.getCar() == null ? "false" : human.getCar().isCool())
         );
     }
+
+    public static long extractIdFromLine(String line) {
+        return Long.parseLong(line.split(",")[0]);}
+
 }
 

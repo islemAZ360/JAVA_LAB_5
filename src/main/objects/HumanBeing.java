@@ -2,12 +2,14 @@ package main.objects;
 import main.utils.HumanBeingChecker;
 import main.utils.HumanBeingReader;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class HumanBeing implements Comparable<HumanBeing> {
-    private static final AtomicInteger humanCount = new AtomicInteger(0); // The first ID is 1
-    private final long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-    private final java.time.LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private static AtomicLong humanCount = new AtomicLong(0); // The first ID is 1
+    private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private java.time.LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
     private boolean realHero;
@@ -47,10 +49,45 @@ public class HumanBeing implements Comparable<HumanBeing> {
         this.setWeaponType(weaponType);
         this.setCar(car);
     }
+    public HumanBeing(
+            long id,
+            String creationDateVal,
+            String name,
+            Coordinates coordinates,
+            boolean realHero,
+            boolean hasToothpick,
+            double impactSpeed,
+            String soundtrackName,
+            int minutesOfWaiting,
+            WeaponType weaponType,
+            Car car
+    ) {
+        this.setId(id);
+        this.setValueCreationDate(creationDateVal);
+        this.setName(name);
+        this.setCoordinates(coordinates);
+        this.setRealHero(realHero);
+        this.setHasToothpick(hasToothpick);
+        this.setImpactSpeed(impactSpeed);
+        this.setSoundtrackName(soundtrackName);
+        this.setMinutesOfWaiting(minutesOfWaiting);
+        this.setWeaponType(weaponType);
+        this.setCar(car);
+    }
+
 
     public long getId() {
         return this.id;
     }
+
+    private void setId(long id) {
+        this.id = id;
+    }
+
+    public void setValueHumanCount(long value){
+        HumanBeing.humanCount.set(value);
+    }
+
 
     public String getName() {
         return name;
@@ -70,6 +107,10 @@ public class HumanBeing implements Comparable<HumanBeing> {
 
     public java.time.LocalDateTime getCreationDate() {
         return creationDate;
+    }
+
+    public void setValueCreationDate(String creationDateVal) {
+        this.creationDate = LocalDateTime.parse(creationDateVal);
     }
 
     public boolean isRealHero() {

@@ -28,15 +28,19 @@ public class RemoveByIdCommand implements Command {
             System.out.println("Введите ID.");
             return;
         }
-
-        long id = Long.parseLong(args[0]);
-
-        boolean removed = collectionManager.removeById(id);
-
-        if (removed) {
-            System.out.println("Элемент удален.");
-        } else {
-            System.out.println("Элемент не найден.");
+        try {
+            long id = Long.parseLong(args[1]);
+            boolean removed = collectionManager.removeById(id);
+            if (removed) {
+                System.out.println("Элемент удален.");
+            } else {
+                System.out.println("Элемент не найден.");
+            }
         }
+        catch(Exception e){
+            System.err.println("id bị lỗi: id phải là số");
+
+        }
+
     }
 }
