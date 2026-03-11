@@ -29,11 +29,16 @@ public class ExecuteScriptCommand implements Command {
 
     @Override
     public void execute(String[] args) {
-        try {
-            CommandFileManager commandFileManager = new CommandFileManager(args[1]);
-            commandFileManager.readFileAndRunScripts(this.collectionManager, this.commandManager, this.humanBeingFileManager);
-        } catch (Exception e) {
-            System.out.println("Error in ExecuteScriptCommand in execute: " + e);
+        if (args.length == 2) {
+            try {
+                CommandFileManager commandFileManager = new CommandFileManager(args[1]);
+                commandFileManager.readFileAndRunScripts(this.collectionManager, this.commandManager, this.humanBeingFileManager);
+            } catch (Exception e) {
+                System.out.println("Error in ExecuteScriptCommand in execute: " + e);
+            }
+        } else {
+            System.out.println("To use this command, please enter: " + this.getDescription());
         }
+
     }
 }
