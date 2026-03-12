@@ -207,13 +207,45 @@ public class InputManager {
         return new HumanBeing(name, coors, hero, toothpick, speed, soundtrack, minutes, weapon, car);
     }
 
+    public HumanBeing readHumanBeing(String[] args) {
+//        args: ["name", "x", "y", ...]
+        try {
+            HumanBeing humanBeing = new HumanBeing(
+                args[0],
+                args[1],
+                args[2],
+                args[3],
+                args[4],
+                args[5],
+                args[6],
+                args[7],
+                args[8],
+                args[9]
+            );
+            return humanBeing;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Some args went wrong");
+        }
+    }
+
+
     /**
      * Создаёт HumanBeing с указанным ID (через конвертацию в CSV и обратно)
      * @param id желаемый ID
      * @return HumanBeing с указанным ID
      */
     public HumanBeing createHumanBeingWithId(long id) {
-        HumanBeing human = readHumanBeing();
+//        HumanBeing human = readHumanBeing();
+//        String humanInfo = HumanBeingReader.extractInfo(human);
+//        String[] infoFields = humanInfo.split(",");
+//        infoFields[0] = String.valueOf(id);
+//        return HumanBeingReader.convertLine(String.join(",", infoFields));
+        return createHumanBeingWithId(id, null);
+    }
+
+    public HumanBeing createHumanBeingWithId(long id, String[] args) {
+        HumanBeing human = args==null? readHumanBeing():readHumanBeing(args);
+
         String humanInfo = HumanBeingReader.extractInfo(human);
         String[] infoFields = humanInfo.split(",");
         infoFields[0] = String.valueOf(id);
