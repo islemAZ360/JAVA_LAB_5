@@ -111,7 +111,6 @@ public class HumanBeing implements Comparable<HumanBeing> {
         HumanBeing.humanCount.set(value);
     }
 
-
     public String getName() {
         return name;
     }

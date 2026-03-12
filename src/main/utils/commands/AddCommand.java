@@ -38,18 +38,7 @@ public class AddCommand implements Command {
         try {
             HumanBeing humanBeing;
             if(args.length == 11) {
-                humanBeing = new HumanBeing(
-                        args[1],
-                        args[2],
-                        args[3],
-                        args[4],
-                        args[5],
-                        args[6],
-                        args[7],
-                        args[8],
-                        args[9],
-                        args[10]
-                );
+                humanBeing = inputManager.readHumanBeing(Arrays.copyOfRange(args, 1, args.length + 1));
             } else if (args.length == 1) {
                 humanBeing = this.inputManager.readHumanBeing();
             } else {

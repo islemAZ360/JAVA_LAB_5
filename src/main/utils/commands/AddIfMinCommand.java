@@ -5,6 +5,8 @@ import main.utils.CollectionManager;
 import main.utils.Command;
 import main.utils.InputManager;
 
+import java.util.Arrays;
+
 public class AddIfMinCommand implements Command {
 
     private final CollectionManager collectionManager;
@@ -73,9 +75,17 @@ public class AddIfMinCommand implements Command {
             return;
         }
 
-        // Nếu vượt qua tất cả điều kiện, tiến hành nhập dữ liệu
-        System.out.println("Введите данные для нового элемента с ID = " + newId + ":");
-        HumanBeing newHuman = inputManager.createHumanBeingWithId(newId);
+        HumanBeing newHuman;
+
+        if(args.length == 12) {
+            newHuman = this.inputManager.createHumanBeingWithId(newId, Arrays.copyOfRange(args, 2, args.length + 1));
+        } else if (args.length == 2) {
+            // Nếu vượt qua tất cả điều kiện, tiến hành nhập dữ liệu
+            System.out.println("Введите данные для нового элемента с ID = " + newId + ":");
+            newHuman = this.inputManager.createHumanBeingWithId(newId);
+        } else {
+            throw new IllegalArgumentException("Entry arguments for HumanBeing are not correct.");
+        }
 
         // Thêm vào collection
         collectionManager.add(newHuman);
