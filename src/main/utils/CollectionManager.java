@@ -3,9 +3,7 @@ package main.utils;
 import main.objects.Const;
 import main.objects.HumanBeing;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -90,10 +88,18 @@ public class CollectionManager extends TreeSet<HumanBeing> {
      * Выводит все элементы коллекции в виде таблицы
      */
     public void show() {
-        System.out.printf("%-4s | %-20s | %-12s | %-12s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", Const.FILEHEADER);
+//        System.out.printf("%-4s | %-20s | %-11s | %-11s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", Const.FILEHEADER);
+        show(this.stream().toList());
+//        for (HumanBeing human: this) {
+//            System.out.printf("%-4s | %-20s | %-11s | %-11s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", HumanBeingReader.extractInfo(human).split(","));
+//        }
+    }
 
-        for (HumanBeing human : this) {
-            System.out.printf("%-4s | %-20s | %-12s | %-12s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", HumanBeingReader.extractInfo(human).split(","));
+    public void show(List<HumanBeing> listHuman) {
+        System.out.printf("%-4s | %-20s | %-11s | %-11s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", Const.FILEHEADER);
+
+        for (HumanBeing human: listHuman) {
+            System.out.printf("%-4s | %-20s | %-11s | %-11s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", HumanBeingReader.extractInfo(human).split(","));
         }
     }
 
