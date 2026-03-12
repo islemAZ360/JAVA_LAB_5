@@ -27,13 +27,11 @@ public class AddIfMinCommand implements Command {
 
     @Override
     public void execute(String[] args) {
-        // Kiểm tra argument
         if (args.length < 2) {
             System.out.println("Ошибка: не указан ID. Использование: add_if_min {id}");
             return;
         }
 
-        // Parse ID từ argument
         long newId;
         try {
             newId = Long.parseLong(args[1]);
@@ -42,23 +40,20 @@ public class AddIfMinCommand implements Command {
             return;
         }
 
-        // Kiểm tra ID có hợp lệ không (phải > 0)
         if (newId <= 0) {
             System.out.println("Ошибка: ID должен быть положительным числом");
             return;
         }
 
-        // Lấy min ID hiện tại
         Long minId = null;
         if (!collectionManager.isEmpty()) {
             minId = collectionManager.getMin().getId();
         }
 
-        // Trường hợp collection rỗng
         if (minId == null) {
             System.out.println("Коллекция пуста. Можно добавить элемент с любым ID.");
         }
-        // So sánh ID mới với min ID
+
         else if (newId >= minId) {
             System.out.println("ID " + newId + " не меньше минимального ID в коллекции (" + minId + ").");
             System.out.println("Элемент не будет добавлен.");
@@ -67,17 +62,14 @@ public class AddIfMinCommand implements Command {
             System.out.println("ID " + newId + " меньше минимального ID (" + minId + "). Можно добавлять элемент.");
         }
 
-        // Kiểm tra xem ID đã tồn tại chưa
         if (collectionManager.getHumanById(newId) != null) {
             System.out.println("Ошибка: элемент с ID " + newId + " уже существует в коллекции!");
             return;
         }
 
-        // Nếu vượt qua tất cả điều kiện, tiến hành nhập dữ liệu
         System.out.println("Введите данные для нового элемента с ID = " + newId + ":");
         HumanBeing newHuman = inputManager.createHumanBeingWithId(newId);
 
-        // Thêm vào collection
         collectionManager.add(newHuman);
         System.out.println("Элемент с ID " + newId + " успешно добавлен в коллекцию.");
     }

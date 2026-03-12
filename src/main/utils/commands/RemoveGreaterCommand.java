@@ -24,7 +24,6 @@ public class RemoveGreaterCommand implements Command {
 
     @Override
     public void execute(String[] args) {
-        // Kiểm tra tham số
         if (args.length < 2) {
             System.out.println("Использование: remove_greater id");
             System.out.println("Пример: remove_greater 10");
@@ -33,28 +32,21 @@ public class RemoveGreaterCommand implements Command {
         }
 
         try {
-            // Lấy ID từ tham số
             long id = Long.parseLong(args[1]);
 
-            // Tìm element với ID đó
             HumanBeing element = collectionManager.getHumanById(id);
 
-            // Kiểm tra element có tồn tại không
             if (element == null) {
                 System.out.println("Элемент с ID " + id + " не найден.");
                 return;
             }
 
-            // Lưu kích thước cũ
             int oldSize = collectionManager.size();
 
-            // Xóa các element lớn hơn
             collectionManager.removeGreater(element);
 
-            // Tính số lượng đã xóa
             int removedCount = oldSize - collectionManager.size();
 
-            // Thông báo kết quả
             if (removedCount > 0) {
                 System.out.println("Удалено элементов с ID больше " + id + ": " + removedCount);
                 System.out.println("Текущий размер коллекции: " + collectionManager.size());

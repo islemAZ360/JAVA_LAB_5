@@ -33,13 +33,12 @@ public class UpdateCommand implements Command {
             return;
         }
 
-//        long id = Long.parseLong(args[1]);
         if (args.length < 2) {
             System.out.println("Использование: update id");
             return;
         }
 
-        long id = Long.parseLong(args[1]); // args[1] là ID
+        long id = Long.parseLong(args[1]); // args[1] is ID
 
         HumanBeing newHuman = inputManager.readHumanBeing();
 

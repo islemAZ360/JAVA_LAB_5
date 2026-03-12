@@ -8,9 +8,16 @@ import java.util.Comparator;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 
+/**
+ * Управляет коллекцией HumanBeing с автоматической сортировкой по ID.
+ * Расширяет TreeSet, хранит время создания коллекции.
+ */
 public class CollectionManager extends TreeSet<HumanBeing> {
     private final java.time.LocalDateTime creationTime = java.time.LocalDateTime.now();
 
+    /**
+     * Создаёт коллекцию с компаратором для сортировки HumanBeing по ID
+     */
     public CollectionManager() {
         super(new Comparator<HumanBeing>() {
             @Override
@@ -69,6 +76,9 @@ public class CollectionManager extends TreeSet<HumanBeing> {
         return this.toString();
     }
 
+    /**
+     * Возвращает информацию о коллекции: тип, дата создания, размер
+     */
     public String toString() {
         return "Информации о коллекции:" +
                 "\n>> Тип: " + this.getClass().getGenericSuperclass().getTypeName() +
@@ -76,27 +86,25 @@ public class CollectionManager extends TreeSet<HumanBeing> {
                 "\n>> Количество элементов: " + this.size();
     }
 
+    /**
+     * Выводит все элементы коллекции в виде таблицы
+     */
     public void show() {
         System.out.printf("%-4s | %-20s | %-12s | %-12s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", Const.FILEHEADER);
 
-        for (HumanBeing human: this) {
+        for (HumanBeing human : this) {
             System.out.printf("%-4s | %-20s | %-12s | %-12s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", HumanBeingReader.extractInfo(human).split(","));
         }
     }
 
 
-//    Поиск по id но фиксированный, не можем переиспользовать
-//    public HumanBeing getHumanById(long id) {
-//        for (HumanBeing h : this) {
-//            if(id == h.getId()) {
-//                return h;
-//            };
-//        };
-//        return null;
-//    }
-
-//  Используем Stream чтобы фильтровать первый элемент, который удовлетворяет условиям
+    //  Используем Stream чтобы фильтровать первый элемент, который удовлетворяет условиям
 //  База
+    /**
+     * Находит первый элемент, удовлетворяющий условию фильтра
+     * @param filter условие для поиска
+     * @return найденный HumanBeing или null
+     */
     public HumanBeing getHumanBy(Predicate<HumanBeing> filter) {
         return this.stream()
                 .filter(filter)
@@ -104,14 +112,23 @@ public class CollectionManager extends TreeSet<HumanBeing> {
                 .orElse(null); // Возврат null при ненайденном элементе
     }
 
+    /**
+     * Находит человека по ID
+     */
     public HumanBeing getHumanById(long id) {
         return this.getHumanBy(human -> human.getId() == id);
     }
-    public HumanBeing getHumanByName(String name) {
+
+//    public HumanBeing getHumanByName(String name) {
 //        Redundant and long variant
-//        return this.getHumanBy(human -> human.getName().toLowerCase().equals(name.toLowerCase());
-        return this.getHumanBy(human -> human.getName().equalsIgnoreCase(name));
-    }
+//       return this.getHumanBy(human -> human.getName().toLowerCase().equals(name.toLowerCase());
+//        return this.getHumanBy(human -> human.getName().equalsIgnoreCase(name));
+//    }
+
+    /**
+     * Удаляет человека по ID
+     * @return true если удалён, false если не найден
+     */
     public boolean removeById(long id) {
         HumanBeing human = getHumanById(id);
         if (human != null) {
@@ -120,14 +137,16 @@ public class CollectionManager extends TreeSet<HumanBeing> {
         return false;
     }
 
+    /**
+     * Обновляет данные человека с указанным ID (сохраняет старый ID)
+     * @return true если обновлён, false если ID не найден
+     */
     public boolean update(long id, HumanBeing newHuman) {
         HumanBeing oldHuman = getHumanById(id);
         if (oldHuman == null) {
             return false;
         }
 
-        // Xóa element cũ
-//        this.remove(oldHuman);
         try {
             oldHuman.setName(newHuman.getName());
             oldHuman.setCoordinates(newHuman.getCoordinates());
@@ -141,27 +160,12 @@ public class CollectionManager extends TreeSet<HumanBeing> {
         } catch (Exception e) {
             System.err.println("bug from update method in CollectionManager");
         }
-
-        // Tạo element mới với ID và creationDate cũ
-        // Cần thêm constructor trong HumanBeing để copy ID và creationDate
-//        HumanBeing updatedHuman = new HumanBeing(
-//                newHuman.getName(),
-//                newHuman.getCoordinates(),
-//                newHuman.isRealHero(),
-//                newHuman.isHasToothpick(),
-//                newHuman.getImpactSpeed(),
-//                newHuman.getSoundtrackName(),
-//                newHuman.getMinutesOfWaiting(),
-//                newHuman.getWeaponType(),
-//                newHuman.getCar()
-//        );
-
-
-
-        // Cần set ID và creationDate cũ (hiện tại không thể do private)
         return true;
     }
 
+    /**
+     * Возвращает человека с максимальным ID
+     */
     public HumanBeing getMax() {
         if (this.isEmpty()) return null;
         return this.stream()
@@ -169,10 +173,16 @@ public class CollectionManager extends TreeSet<HumanBeing> {
                 .orElse(null);
     }
 
+    /**
+     * Возвращает максимальный ID в коллекции
+     */
     public Long getMaxId() {
         return getMax().getId();
     }
 
+    /**
+     * Возвращает человека с минимальным ID
+     */
     public HumanBeing getMin() {
         if (this.isEmpty()) return null;
         return this.stream()
@@ -180,12 +190,14 @@ public class CollectionManager extends TreeSet<HumanBeing> {
                 .orElse(null);
     }
 
+    /**
+     * Удаляет всех людей с ID больше, чем у указанного элемента
+     */
     public void removeGreater(HumanBeing element) {
-        // Tạo list tạm để tránh ConcurrentModificationException
         java.util.ArrayList<HumanBeing> toRemove = new java.util.ArrayList<>();
 
         for (HumanBeing human : this) {
-            if (human.compareTo(element) > 0) { // So sánh theo ID (lớn hơn)
+            if (human.compareTo(element) > 0) {
                 toRemove.add(human);
             }
         }

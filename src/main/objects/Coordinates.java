@@ -7,6 +7,12 @@ public class Coordinates {
 
     public Coordinates() {}
 
+    /**
+     * Создаёт координаты с проверкой допустимых значений
+     * @param x координата X (должна быть > Const.MINVALUEX и < Const.MAXVALUEX)
+     * @param y координата Y (должна быть <= Const.MAXVALUEY)
+     */
+
     public Coordinates(int x, long y) {
         setX(x);
         setY(y);

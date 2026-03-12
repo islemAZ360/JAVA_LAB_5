@@ -8,7 +8,6 @@ import java.io.*;
  */
 public abstract class FileManager {
     private final String filePath;
-    // Không cần giữ writer như biến instance nữa
 
     /**
      * Конструктор принимает путь к файлу из Main.

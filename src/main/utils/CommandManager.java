@@ -3,18 +3,26 @@ package main.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Управляет регистрацией и выполнением команд.
+ * Реализует паттерн Command.
+ */
 public class CommandManager {
-    // #1
     private final Map<String, Command> commands = new HashMap<>();
 
-    // #2
-
+    /**
+     * Регистрирует новую команду в системе
+     * @param commandName название команды (ключ для поиска)
+     * @param command объект команды, реализующий интерфейс Command
+     */
     public void registerCommand(String commandName, Command command) {
         commands.put(commandName, command);
     }
 
-    // #3
-
+    /**
+     * Выполняет команду по её имени из массива аргументов
+     * @param args массив аргументов, где args[0] - имя команды
+     */
     public void executeCommand(String[] args) {
 
         if (args.length == 0 || args[0].trim().isEmpty()) {
@@ -35,7 +43,10 @@ public class CommandManager {
             }
         }
     }
-
+    /**
+     * Возвращает карту всех зарегистрированных команд
+     * @return Map с командами (ключ - имя команды)
+     */
     public Map<String, Command> getCommands() {
         return commands;
     }

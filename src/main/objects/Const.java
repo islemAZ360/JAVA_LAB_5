@@ -1,5 +1,12 @@
 package main.objects;
 
+/**
+ * Содержит константы, используемые в приложении:
+ * - граничные значения для полей объектов
+ * - пути к файлам данных и скриптов
+ * - заголовки CSV файлов
+ * - названия методов для работы с объектами
+ */
 public final class Const {
     public static final int MAXVALUEX = 128;
     public static final int MINVALUEX = -162;

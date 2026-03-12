@@ -39,21 +39,6 @@ public class FilterLessThanMinutesOfWaitingCommand implements Command {
             for (HumanBeing human : this.collectionManager) {
                 if (human.getMinutesOfWaiting() < minutes) {
 
-                    // Sử dụng phương thức in format
-//                    System.out.printf("%-4d | %-20s | %-12d | %-12d | %-30s | %-10b | %-14b | %-11.2f | %-14s | %-16d | %-10s | %-7b%n",
-//                            human.getId(),
-//                            human.getName(),
-//                            human.getCoordinates().getX(),
-//                            human.getCoordinates().getY(),
-//                            human.getCreationDate(),
-//                            human.isRealHero(),
-//                            human.isHasToothpick(),
-//                            human.getImpactSpeed(),
-//                            human.getSoundtrackName(),
-//                            human.getMinutesOfWaiting(),
-//                            human.getWeaponType() != null ? human.getWeaponType() : "",
-//                            human.getCar() != null ? human.getCar().isCool() : false
-//                    );
                     System.out.printf("%-4s | %-20s | %-12s | %-12s | %-30s | %-10s | %-14s | %-11s | %14s | %16s | %10s | %7s\n", HumanBeingReader.extractInfo(human).split(","));
                     found = true;
                 }

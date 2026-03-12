@@ -5,15 +5,36 @@ import main.objects.Coordinates;
 import main.objects.HumanBeing;
 import main.objects.WeaponType;
 
+/**
+ * Преобразует HumanBeing в CSV строку и обратно.
+ * Используется для чтения/записи файлов данных.
+ */
 public class HumanBeingReader {
+
+    /**
+     * Создаёт объект Car из boolean значения
+     * @param isCool флаг крутости машины
+     * @return новый объект Car
+     */
     private static Car convertCar(boolean isCool) {
         return new Car(isCool);
     }
 
+    /**
+     * Создаёт объект Coordinates из x и y
+     * @param x координата X
+     * @param y координата Y
+     * @return новый объект Coordinates
+     */
     private static Coordinates convertCoordinates(int x, long y) {
         return new Coordinates(x, y);
     }
 
+    /**
+     * Преобразует строку CSV в объект HumanBeing
+     * @param line строка CSV с данными (формат из Const.FILEHEADER)
+     * @return объект HumanBeing с данными из файла
+     */
     public static HumanBeing convertLine(String line) {
         String[] humanInfo = line.split(",");
 
@@ -37,6 +58,11 @@ public class HumanBeingReader {
             );
         }
 
+    /**
+     * Преобразует объект HumanBeing в строку CSV
+     * @param human объект для преобразования
+     * @return строка CSV с данными объекта
+     */
     public static String extractInfo(HumanBeing human) {
         return String.format("%d,%s,%d,%d,%s,%b,%b,%s,%s,%d,%s,%b",
                 human.getId(),
@@ -54,6 +80,11 @@ public class HumanBeingReader {
         );
     }
 
+    /**
+     * Извлекает ID из строки CSV (первый элемент)
+     * @param line строка CSV
+     * @return ID объекта
+     */
     public static long extractIdFromLine(String line) {
         return Long.parseLong(line.split(",")[0]);}
 

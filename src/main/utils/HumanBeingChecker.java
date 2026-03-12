@@ -5,6 +5,10 @@ import main.objects.Const;
 import main.objects.Coordinates;
 import main.objects.WeaponType;
 
+/**
+ * Проверяет корректность полей HumanBeing.
+ * Все методы статические, выбрасывают IllegalArgumentException при неверных данных.
+ */
 public class HumanBeingChecker {
     public static String checkName(String name) {
         if (name == null || name.trim().isEmpty()) {

@@ -38,8 +38,7 @@ public class FilterGreaterThanCarCommand implements Command {
             Car car = human.getCar();
             boolean carCool = (car != null) ? car.isCool() : false;
 
-            // So sánh: true hay false
-            if (carCool == filterValue) { // true > false
+            if (carCool == filterValue) {
                 printHuman(human);
                 found = true;
             }

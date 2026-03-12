@@ -207,23 +207,11 @@ public class InputManager {
         return new HumanBeing(name, coors, hero, toothpick, speed, soundtrack, minutes, weapon, car);
     }
 
-    // Thêm vào class InputManager
-//    public HumanBeing readHumanBeingWithId(long id) {
-//        String name = readName();
-//        Coordinates coors = new Coordinates(readX(), readY());
-//        boolean hero = readBoolean("Он настоящий герой?");
-//        boolean toothpick = readBoolean("У него есть зубочистка?");
-//        double speed = readImpactSpeed();
-//
-//        String soundtrack = readSoundtrackName();
-//        int minutes = readMinutesOfWaiting();
-//        WeaponType weapon = readWeaponType();
-//        Car car = readCar();
-//
-//        // Sử dụng constructor có ID
-//        return new HumanBeing(id, java.time.LocalDate.now().toString(), name, coors, hero, toothpick, speed, soundtrack, minutes, weapon, car);
-//    }
-
+    /**
+     * Создаёт HumanBeing с указанным ID (через конвертацию в CSV и обратно)
+     * @param id желаемый ID
+     * @return HumanBeing с указанным ID
+     */
     public HumanBeing createHumanBeingWithId(long id) {
         HumanBeing human = readHumanBeing();
         String humanInfo = HumanBeingReader.extractInfo(human);
