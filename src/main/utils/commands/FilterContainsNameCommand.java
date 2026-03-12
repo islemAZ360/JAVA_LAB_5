@@ -34,7 +34,6 @@ public class FilterContainsNameCommand implements Command {
 
         for (HumanBeing human : this.collectionManager) {
             if (human.getName().toLowerCase().contains(nameSubstring.toLowerCase())) {
-                // Sử dụng phương thức show format giống trong CollectionManager
                 System.out.printf("%-4d | %-20s | %-12d | %-12d | %-30s | %-10b | %-14b | %-11.2f | %-14s | %-16d | %-10s | %-7b%n",
                         human.getId(),
                         human.getName(),

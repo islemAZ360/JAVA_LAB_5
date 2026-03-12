@@ -29,10 +29,8 @@ public class SaveCommand implements Command {
     public void execute(String[] args) {
         if (collectionManager.isEmpty()) {
             System.out.println("Коллекция пуста. Файл будет очищен.");
-            // Vẫn gọi saveAll để tạo file rỗng hoặc xóa nội dung
         }
 
         humanBeingFileManager.saveAll(collectionManager);
-        // Không cần in thêm vì saveAll đã in thông báo
     }
 }

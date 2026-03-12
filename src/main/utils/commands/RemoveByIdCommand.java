@@ -38,7 +38,7 @@ public class RemoveByIdCommand implements Command {
             }
         }
         catch(Exception e){
-            System.err.println("id bị lỗi: id phải là số");
+            System.err.println("Ошибка ID: ID должен быть числом.");
 
         }
 

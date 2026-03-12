@@ -30,20 +30,17 @@ public class ClearCommand implements Command {
 
     @Override
     public void execute(String[] args) {
-        // Kiểm tra tham số
         if (args.length > 1) {
             System.out.println("Команда clear не принимает аргументы.");
             System.out.println("Использование: clear");
             return;
         }
 
-        // Kiểm tra collection rỗng
         if (collectionManager.isEmpty()) {
             System.out.println("Коллекция уже пуста.");
             return;
         }
 
-        // Hiển thị thông tin hiện tại
         System.out.println("В коллекции " + collectionManager.size() + " элементов.");
         System.out.print("Вы уверены, что хотите очистить коллекцию? (yes/no): ");
 

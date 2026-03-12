@@ -228,6 +228,12 @@ public class InputManager {
         }
     }
 
+
+    /**
+     * Создаёт HumanBeing с указанным ID (через конвертацию в CSV и обратно)
+     * @param id желаемый ID
+     * @return HumanBeing с указанным ID
+     */
     public HumanBeing createHumanBeingWithId(long id) {
 //        HumanBeing human = readHumanBeing();
 //        String humanInfo = HumanBeingReader.extractInfo(human);
